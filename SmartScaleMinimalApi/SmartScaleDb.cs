@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartScaleMinimalApi;
+using System.Reflection.Metadata;
 
 namespace SmartScaleMinimalAPI
 {
@@ -12,5 +13,12 @@ namespace SmartScaleMinimalAPI
         public DbSet<SmartScale> Scales => Set<SmartScale>();
         public DbSet<PersonInfo> PersonInfos => Set<PersonInfo>();
         public DbSet<FaceEigen> FaceEigens => Set<FaceEigen>();
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<PersonInfo>()
+        //        .HasIndex(b => b.FaceNo)
+        //        .IsUnique();
+        //}
     }
 }
