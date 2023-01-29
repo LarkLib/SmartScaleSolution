@@ -91,7 +91,7 @@
     const rules = reactive<FormRules>({
         name: [
             { required: true, message: 'Please input Activity name', trigger: 'blur' },
-            { min: 0, max: 200, message: 'Length should be 3 to 5', trigger: 'blur' },
+            { min: 0, max: 200, message: 'Length should be 0 to 200', trigger: 'blur' },
         ],
         resource: [
             {
