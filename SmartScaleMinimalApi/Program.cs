@@ -29,6 +29,10 @@ namespace SmartScaleMinimalApi
             builder.Services.AddDbContext<SmartScaleDb>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
             var app = builder.Build();
 
             //if (app.Environment.IsDevelopment())
@@ -36,6 +40,7 @@ namespace SmartScaleMinimalApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors("CorsPolicy");
 
             feedData(app);
 
@@ -65,7 +70,10 @@ namespace SmartScaleMinimalApi
             app.MapGet("/api/GetPersonInfoByfaceNo/{gatewayId}/{faceNo}",
             [SwaggerOperation(Summary = "查询个人数据", Description = "根据faceNo查询数据,返回对应个人数据")]
             async ([SwaggerParameter("设备编号", Required = true)] string gatewayId, [SwaggerParameter("人脸编号", Required = true)] string faceNo, SmartScaleDb db) =>
-            await db.PersonInfos.ToListAsync());
+            //await db.PersonInfos.ToListAsync());
+            //db.PersonInfos.Select(p => p.FaceNo == faceNo));
+            (from p in db.PersonInfos where p.FaceNo == faceNo select p).FirstOrDefault());
+
 
             app.MapGet("/api/GetUpdatePersonInfoUrl/",
             [SwaggerOperation(Summary = "修改个人信息链接", Description = "返回修改个人信息页面链接")]
@@ -79,14 +87,14 @@ namespace SmartScaleMinimalApi
             {
                 var persion = db.PersonInfos.Single(info => info.Id == personInfo.Id);
                 persion.Name = personInfo.Name;
-                persion.Age= personInfo.Age;
-                persion.Beauty= personInfo.Beauty;
-                persion.Gender= personInfo.Gender;
-                persion.Ctime= personInfo.Ctime;
-                persion.FaceNo= personInfo.FaceNo;
-                persion.GatewayId= personInfo.GatewayId;
-                persion.Glass= personInfo.Glass;
-                persion.Hat= personInfo.Hat;
+                persion.Age = personInfo.Age;
+                persion.Beauty = personInfo.Beauty;
+                persion.Gender = personInfo.Gender;
+                persion.Ctime = personInfo.Ctime;
+                persion.FaceNo = personInfo.FaceNo;
+                persion.GatewayId = personInfo.GatewayId;
+                persion.Glass = personInfo.Glass;
+                persion.Hat = personInfo.Hat;
 
                 db.PersonInfos.Update(persion);
                 await db.SaveChangesAsync();

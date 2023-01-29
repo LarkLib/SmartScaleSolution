@@ -1,9 +1,9 @@
-<template>
+﻿<template>
     <div>
         Hello,PersonInfo.
         <h1>The faceNo is {{ $route.params.faceNo }}</h1>
-        {{faceNo}}-{{queryname}}
-        {{post}}
+        {{faceNo}}-{{queryname}}<br />
+        {{post}}<br />
         <el-form ref="ruleFormRef"
                  :model="ruleForm"
                  :rules="rules"
@@ -11,79 +11,41 @@
                  class="demo-ruleForm"
                  :size="formSize"
                  status-icon>
-            <el-form-item label="Activity name" prop="name">
-                <el-input v-model="ruleForm.name" />
+            <el-form-item label="编号" prop="name">
+                <label>{{post.faceNo}}</label>
             </el-form-item>
-            <el-form-item label="Activity zone" prop="region">
-                <el-select v-model="ruleForm.region" placeholder="Activity zone">
-                    <el-option label="Zone one" value="shanghai" />
-                    <el-option label="Zone two" value="beijing" />
-                </el-select>
+            <el-form-item label="姓名" prop="name">
+                <el-input v-model="post.name" />
             </el-form-item>
-            <el-form-item label="Activity count" prop="count">
-                <el-select-v2 v-model="ruleForm.count"
-                              placeholder="Activity count"
-                              :options="options" />
+            <el-form-item label="年龄" prop="age">
+                <el-input-number v-model="post.age" :min="0" :max="200" :value-on-clear="0" />
             </el-form-item>
-            <el-form-item label="Activity time" required>
-                <el-col :span="11">
-                    <el-form-item prop="date1">
-                        <el-date-picker v-model="ruleForm.date1"
-                                        type="date"
-                                        label="Pick a date"
-                                        placeholder="Pick a date"
-                                        style="width: 100%" />
-                    </el-form-item>
-                </el-col>
-                <el-col class="text-center" :span="2">
-                    <span class="text-gray-500">-</span>
-                </el-col>
-                <el-col :span="11">
-                    <el-form-item prop="date2">
-                        <el-time-picker v-model="ruleForm.date2"
-                                        label="Pick a time"
-                                        placeholder="Pick a time"
-                                        style="width: 100%" />
-                    </el-form-item>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="Instant delivery" prop="delivery">
-                <el-switch v-model="ruleForm.delivery" />
-            </el-form-item>
-            <el-form-item label="Activity type" prop="type">
-                <el-checkbox-group v-model="ruleForm.type">
-                    <el-checkbox label="Online activities" name="type" />
-                    <el-checkbox label="Promotion activities" name="type" />
-                    <el-checkbox label="Offline activities" name="type" />
-                    <el-checkbox label="Simple brand exposure" name="type" />
-                </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="Resources" prop="resource">
-                <el-radio-group v-model="ruleForm.resource">
-                    <el-radio label="Sponsorship" />
-                    <el-radio label="Venue" />
+            <el-form-item label="性别" prop="resource">
+                <el-radio-group v-model="post.gender">
+                    <el-radio label="Man">男</el-radio>
+                    <el-radio label="Female">女</el-radio>
+                    <el-radio label="Unknown">未知</el-radio>
                 </el-radio-group>
-            </el-form-item>
-            <el-form-item label="Activity form" prop="desc">
-                <el-input v-model="ruleForm.desc" type="textarea" />
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm(ruleFormRef)">
-                    Create
+                    提交
                 </el-button>
-                <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+                <el-button @click="resetForm(ruleFormRef)">重置</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
+    import { defineComponent } from 'vue';
+    import axios from 'axios'
+
+    export default defineComponent({
         name: 'PersonInfo',
         props: {
             msg: String,
-            name: String,
+            //name: String,
         },
         data() {
             const faceNo = this.$route.params.faceNo;
@@ -99,94 +61,50 @@ export default defineComponent({
             fetchData(): void {
                 this.post = null;
                 //this.loading = true;
-
-                fetch('https://jsonplaceholder.typicode.com/posts/1')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        //this.loading = false;
-                        return;
-                    });
+                //const result = await axios.get('https://jsonplaceholder.typicode.com/posts/1')
+                axios
+                    //.get('https://jsonplaceholder.typicode.com/posts/1')
+                    //.get("https://localhost:44368/api/GetUpdatePersonInfoUrl?gatewayId=100")
+                    //.get("/smartScaleapi/api/GetUpdatePersonInfoUrl?gatewayId=100")
+                    .get("/smartScaleapi/api/GetPersonInfoByfaceNo/100/12")
+                    .then((response) => {
+                        //console.log(response.data.title)
+                        //response.Headers.Add("Access-Control-Allow-Origin", "*")
+                        this.post = response.data
+                    })
             }
         }
-});
+    });
 </script>
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
-//import axios from 'axios'
+    import { reactive, ref } from 'vue'
+    import type { FormInstance, FormRules } from 'element-plus'
 
-const formSize = ref('default')
-const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
+    //const num = ref(0)
+    const formSize = ref('default')
+    const ruleFormRef = ref<FormInstance>()
+    const ruleForm = reactive({
         name: 'Hello',
-        region: '',
-        count: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
         resource: '',
-        desc: '',
-})
+    })
 
-const rules = reactive<FormRules>({
+    const rules = reactive<FormRules>({
         name: [
             { required: true, message: 'Please input Activity name', trigger: 'blur' },
-            { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
-        ],
-        region: [
-            {
-                required: true,
-                message: 'Please select Activity zone',
-                trigger: 'change',
-            },
-        ],
-        count: [
-            {
-                required: true,
-                message: 'Please select Activity count',
-                trigger: 'change',
-            },
-        ],
-        date1: [
-            {
-                type: 'date',
-                required: true,
-                message: 'Please pick a date',
-                trigger: 'change',
-            },
-        ],
-        date2: [
-            {
-                type: 'date',
-                required: true,
-                message: 'Please pick a time',
-                trigger: 'change',
-            },
-        ],
-        type: [
-            {
-                type: 'array',
-                required: true,
-                message: 'Please select at least one activity type',
-                trigger: 'change',
-            },
+            { min: 0, max: 200, message: 'Length should be 3 to 5', trigger: 'blur' },
         ],
         resource: [
             {
                 required: true,
-                message: 'Please select activity resource',
+                message: '请选择性别。',
                 trigger: 'change',
             },
         ],
-        desc: [
-            { required: true, message: 'Please input activity form', trigger: 'blur' },
-        ],
-})
+    })
 
-const submitForm = async (formEl: FormInstance | undefined) => {
+    const submitForm = async (formEl: FormInstance | undefined) => {
         if (!formEl) return
+        ruleForm.resource = "Man"
         await formEl.validate((valid, fields) => {
             if (valid) {
                 console.log('submit!')
@@ -194,17 +112,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 console.log('error submit!', fields)
             }
         })
-}
+    }
 
-const resetForm = (formEl: FormInstance | undefined) => {
+    const resetForm = (formEl: FormInstance | undefined) => {
         if (!formEl) return
         formEl.resetFields()
-}
-
-const options = Array.from({ length: 10000 }).map((_, idx) => ({
-        value: `${idx + 1}`,
-        label: `${idx + 1}`,
-}))
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
