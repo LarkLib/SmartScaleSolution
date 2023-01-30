@@ -1,13 +1,13 @@
-<template>
+﻿<template>
     <div>
-        <!--<h1>Oops, it looks like the page you're looking for doesn't exist.</h1>-->
-        <img alt="404 error" src="../../assets/404.png">
+        <h1>未发现编号为{{ $route.params.faceNo }}的数据。</h1>
+        <img alt="404 error" src="../../assets/nodata.jpg">
     </div>
 </template>
 
 <script lang="ts">import { defineComponent } from 'vue';
     export default defineComponent({
-        name: 'NotFound',
+        name: 'NoData',
         props: {
             msg: String,
         },

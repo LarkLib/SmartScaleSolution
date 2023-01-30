@@ -1,7 +1,7 @@
 <template>
     <div class="hello">
         <div id="nav">
-            <router-link :to="{name:'PersonInfo',params: { faceNo: '12345' },query: { name: 'aaa' }}"> PersonInfo </router-link>
+            <router-link :to="{name:'PersonInfo',params: { faceNo: '12' },query: { name: 'aaa' }}"> PersonInfo </router-link>
         </div>
         <p />
         <h1>{{ msg }}</h1>

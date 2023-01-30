@@ -14,4 +14,40 @@
   <ItemGroup>
     <Folder Include="src\router\" />
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="dist\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\js\chunk-vendors.820efe00.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\js\chunk-vendors.820efe00.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\js\app.9254d4da.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\js\app.9254d4da.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\img\nodata.323234a9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\img\404.ba09e973.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\css\chunk-vendors.652ef09d.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dist\css\app.52f2f26b.css" />
+  </ItemGroup>
 </Project>

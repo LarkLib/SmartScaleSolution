@@ -5,6 +5,8 @@ import PersonInfo from "@/views/PersonInfo/index.vue"
 import NotFound from "@/views/NotFound/index.vue"
 import HelloWorld from "@/components/HelloWorld.vue"
 import PersonInfoForm from "@/views/PersonInfo/form.vue"
+import NoData from "@/views/NotFound/nodata.vue"
+
 const routes = [
     {
         path: "/",
@@ -21,6 +23,11 @@ const routes = [
         name: "PersonInfo",
         component: PersonInfo,
         props: true,
+    },
+    {
+        path: "/nodata/:faceNo",
+        name: "NoData",
+        component: NoData,
     },
     {
         path: "/:catchAll(.*)",
