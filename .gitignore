@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SmartScaleMinimalApi/SmartScale.db
+/SmartScaleMinimalApi/SmartScale.db
+/SmartScaleMinimalApi/SmartScale.db-shm
+/SmartScaleMinimalApi/SmartScale.db-wal
