@@ -26,7 +26,8 @@ namespace SmartScaleMinimalApi
             });
 
             //builder.Services.AddDbContext<SmartScaleDb>(opt => opt.UseInMemoryDatabase("ScaleList"));
-            builder.Services.AddDbContext<SmartScaleDb>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
+            //builder.Services.AddDbContext<SmartScaleDb>(opt => opt.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
+            builder.Services.AddDbContext<SmartScaleDb>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase")));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddCors(options =>
@@ -77,8 +78,8 @@ namespace SmartScaleMinimalApi
 
             app.MapGet("/api/GetUpdatePersonInfoUrl/",
             [SwaggerOperation(Summary = "修改个人信息链接", Description = "返回修改个人信息页面链接")]
-            ([SwaggerParameter("设备编号", Required = true)] string gatewayId) =>
-            "http://192.168.1.220:8090/UpdatePersonInfo");
+            ([SwaggerParameter("设备编号", Required = true)] string gatewayId, HttpContext context) =>
+            $"{context.Request.Scheme}://{context.Request.Host.Value}/UpdatePersonInfo");
 
 
             app.MapPost("/api/UpdatePersonInfo/", [SwaggerOperation(Summary = "更改用户数据", Description = "更改用户数据到数据库")]
@@ -156,10 +157,10 @@ namespace SmartScaleMinimalApi
         {
             var scope = app.Services.CreateScope();
             var db = scope.ServiceProvider.GetService<SmartScaleDb>();
-            if (db == null) return;
+            if (db == null || db.PersonInfos.Count() > 0) return;
 
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
+            //db.Database.EnsureDeleted();
+            //db.Database.EnsureCreated();
 
             db.PersonInfos.Add(new PersonInfo() { GatewayId = "HZKkp6eOKZL8W3iPzADj", Age = 19, FaceNo = "12", Beauty = 85, Gender = "Man", Glass = false, Hat = false, Name = "张三", Id = 1 });
             db.PersonInfos.Add(new PersonInfo() { GatewayId = "HZKkp6eOKZL8W3iPzADj", FaceNo = "13", Id = 2 });
