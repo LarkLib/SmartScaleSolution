@@ -13,6 +13,7 @@ namespace SmartScaleMinimalAPI
         public DbSet<SmartScale> Scales => Set<SmartScale>();
         public DbSet<PersonInfo> PersonInfos => Set<PersonInfo>();
         public DbSet<FaceEigen> FaceEigens => Set<FaceEigen>();
+        public DbSet<FaceImage> FaceImages => Set<FaceImage>();
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

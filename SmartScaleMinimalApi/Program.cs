@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 //using System.web.Helpers;
 //using System.Drawing;
 
@@ -15,7 +17,6 @@ namespace SmartScaleMinimalApi
     {
         public static void Main(string[] args)
         {
-
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -94,8 +95,8 @@ namespace SmartScaleMinimalApi
                 persion.Ctime = personInfo.Ctime;
                 persion.FaceNo = personInfo.FaceNo;
                 persion.GatewayId = personInfo.GatewayId;
-                persion.Glass = personInfo.Glass;
-                persion.Hat = personInfo.Hat;
+                //persion.Glass = personInfo.Glass;
+                //persion.Hat = personInfo.Hat;
 
                 db.PersonInfos.Update(persion);
                 await db.SaveChangesAsync();
@@ -132,22 +133,40 @@ namespace SmartScaleMinimalApi
                 return Results.Created($"/api/ScaleItems/{scale.Id}", scale);
             });
 
-            app.MapGet("/api/PersonInfos/{id}", [SwaggerOperation(Summary = "查询用户数据单条数据", Description = "按数据库ID查询数据")]
-            [SwaggerResponse(200, "PersonInfos", typeof(PersonInfo))]
+            app.MapGet("/api/PersonInfo/{id}", [SwaggerOperation(Summary = "查询用户数据单条数据", Description = "按数据库ID查询数据")]
+            [SwaggerResponse(200, "PersonInfo", typeof(PersonInfo))]
             async ([SwaggerParameter("数据库id", Required = true)] int id, SmartScaleDb db) =>
             await db.PersonInfos.FindAsync(id)
                 is PersonInfo personInfo
                     ? Results.Ok(personInfo)
                     : Results.NotFound());
 
-            app.MapPost("/api/PersonInfos", [SwaggerOperation(Summary = "保存用户数据", Description = "保存用户数据到数据库")]
-            [SwaggerResponse(200, "PersonInfos", typeof(PersonInfo))]
+            app.MapPost("/api/PersonInfo", [SwaggerOperation(Summary = "保存用户数据", Description = "保存用户数据到数据库")]
+            [SwaggerResponse(200, "PersonInfo", typeof(PersonInfo))]
             async ([SwaggerParameter("用户信息", Required = true)] PersonInfo personInfo, SmartScaleDb db) =>
             {
                 db.PersonInfos.Add(personInfo);
                 await db.SaveChangesAsync();
 
-                return Results.Created($"/PersonInfos/{personInfo.Id}", personInfo);
+                return Results.Created($"/PersonInfo/{personInfo.Id}", personInfo);
+            });
+
+            app.MapGet("/api/FaceEigen/{id}", [SwaggerOperation(Summary = "查询单条人脸特征数据", Description = "按数据库ID查询人脸特征数据")]
+            [SwaggerResponse(200, "FaceEigen", typeof(FaceEigen))]
+            async ([SwaggerParameter("数据库id", Required = true)] int id, SmartScaleDb db) =>
+            await db.FaceEigens.FindAsync(id)
+                is FaceEigen faceEigen
+                    ? Results.Ok(faceEigen)
+                    : Results.NotFound());
+
+            app.MapPost("/api/FaceEigen", [SwaggerOperation(Summary = "保存人脸特征数据", Description = "保存人脸特征数据到数据库")]
+            [SwaggerResponse(200, "FaceEigen", typeof(FaceEigen))]
+            async ([SwaggerParameter("人脸特征", Required = true)] FaceEigen faceEigen, SmartScaleDb db) =>
+            {
+                db.FaceEigens.Add(faceEigen);
+                await db.SaveChangesAsync();
+
+                return Results.Created($"/FaceEigen/{faceEigen.Id}", faceEigen);
             });
 
             app.Run();
@@ -162,7 +181,7 @@ namespace SmartScaleMinimalApi
             //db.Database.EnsureDeleted();
             //db.Database.EnsureCreated();
 
-            db.PersonInfos.Add(new PersonInfo() { GatewayId = "HZKkp6eOKZL8W3iPzADj", Age = 19, FaceNo = "12", Beauty = 85, Gender = "Man", Glass = false, Hat = false, Name = "张三", Id = 1 });
+            db.PersonInfos.Add(new PersonInfo() { GatewayId = "HZKkp6eOKZL8W3iPzADj", Age = 19, FaceNo = "12", Beauty = 85, Gender = "Man", /*Glass = false, Hat = false,*/ Name = "张三", Id = 1 });
             db.PersonInfos.Add(new PersonInfo() { GatewayId = "HZKkp6eOKZL8W3iPzADj", FaceNo = "13", Id = 2 });
             db.Scales.Add(new SmartScale() { GatewayId = "HZKkp6eOKZL8W3iPzADj", Ctime = 1672275733, FaceName = "张三", FaceNo = "12", Height = 170, Id = 1, Weight = 65000 });
             db.Scales.Add(new SmartScale() { GatewayId = "HZKkp6eOKZL8W3iPzADj", Ctime = 1672275899, FaceName = "张三", FaceNo = "12", Height = 170, Id = 2, Weight = 65230 });

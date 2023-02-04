@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SmartScaleMinimalAPI;
@@ -11,9 +12,11 @@ using SmartScaleMinimalAPI;
 namespace SmartScaleMinimalApi.Migrations
 {
     [DbContext(typeof(SmartScaleDb))]
-    partial class SmartScaleDbModelSnapshot : ModelSnapshot
+    [Migration("20230203081409_updateCtimeTypeFromIntToLong")]
+    partial class updateCtimeTypeFromIntToLong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,35 +85,6 @@ namespace SmartScaleMinimalApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FaceEigens");
-                });
-
-            modelBuilder.Entity("SmartScaleMinimalApi.FaceImage", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<long>("Ctime")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("FaceNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("GatewayId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FaceImages");
                 });
 
             modelBuilder.Entity("SmartScaleMinimalApi.PersonInfo", b =>

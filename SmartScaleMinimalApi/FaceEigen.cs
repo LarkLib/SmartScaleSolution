@@ -24,6 +24,6 @@
         /// <summary>
         /// 建立时间
         /// </summary>
-        public int Ctime { get; set; }
+        public long Ctime { get; set; }
     }
 }

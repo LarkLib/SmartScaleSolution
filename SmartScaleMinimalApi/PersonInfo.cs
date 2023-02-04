@@ -36,11 +36,11 @@ namespace SmartScaleMinimalApi
         /// <summary>
         /// 是否戴帽子
         /// </summary>
-        public bool? Hat { get; set; }
+        //public bool? Hat { get; set; }
         /// <summary>
         /// 是否戴眼镜
         /// </summary>
-        public bool? Glass { get; set; }
+        //public bool? Glass { get; set; }
         /// <summary>
         /// 颜值
         /// </summary>
@@ -48,7 +48,7 @@ namespace SmartScaleMinimalApi
         /// <summary>
         /// 建立时间
         /// </summary>
-        public int Ctime { get; set; }
+        public long Ctime { get; set; }
 
     }
 }

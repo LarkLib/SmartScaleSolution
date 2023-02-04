@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Primitives;
+
 namespace SmartScaleWorkerService
 {
     public class Program
@@ -5,12 +7,12 @@ namespace SmartScaleWorkerService
         public static void Main(string[] args)
         {
             IHost host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
+                .ConfigureServices((hostContext, services) =>
                 {
+                    var LogLevel = hostContext.Configuration.GetValue<string>("Logging:LogLevel:Default");
                     services.AddHostedService<Worker>();
                 })
                 .Build();
-
             host.Run();
         }
     }

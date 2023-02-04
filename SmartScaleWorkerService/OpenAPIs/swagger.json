@@ -1,0 +1,673 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SmartScaleMinimalApi",
+    "version": "1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/GetTelemetryByfaceNo/{faceNo}": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "查询个人历史数据",
+        "description": "根据faceNo查询数据,返回对应测量数据",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "query",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "faceNo",
+            "in": "path",
+            "description": "人脸编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "起始时间",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SmartScale"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/GetTelemetryImageByfaceNo/{faceNo}": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "查询个人历史数据",
+        "description": "根据faceNo查询数据,返回对应图片",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "query",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "faceNo",
+            "in": "path",
+            "description": "人脸编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "起始时间",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "结束时间",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/GetPersonInfoByfaceNo/{gatewayId}/{faceNo}": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "查询个人数据",
+        "description": "根据faceNo查询数据,返回对应个人数据",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "faceNo",
+            "in": "path",
+            "description": "人脸编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/GetUpdatePersonInfoUrl": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "修改个人信息链接",
+        "description": "返回修改个人信息页面链接",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "query",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/UpdatePersonInfo": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "更改用户数据",
+        "description": "更改用户数据到数据库",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "PersonInfo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/GetFullFaceDb/{gatewayId}": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "下载人脸库",
+        "description": "返回人脸库全部数据，每批数据最多500条，超过500条分批传送",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "batchNo",
+            "in": "query",
+            "description": "批次号",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FaceEigen"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/GetFaceDbByFaceNoList/{faceNos}": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "下载人脸库",
+        "description": "根据人脸编号列表返回人脸库数据，每批数据最多500条，超过500条分批传送",
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "query",
+            "description": "设备编号",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "batchNo",
+            "in": "query",
+            "description": "批次号",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FaceEigen"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ScaleItems/{id}": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "查询数据库单条数据",
+        "description": "按数据库ID查询数据",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "数据库id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "scaleitems",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartScale"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ScaleItems": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "保存测量数据",
+        "description": "保存测量数据到数据库",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmartScale"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "ScaleItems",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartScale"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PersonInfo/{id}": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "查询用户数据单条数据",
+        "description": "按数据库ID查询数据",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "数据库id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PersonInfo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PersonInfo": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "保存用户数据",
+        "description": "保存用户数据到数据库",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "PersonInfo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/FaceEigen/{id}": {
+      "get": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "查询单条人脸特征数据",
+        "description": "按数据库ID查询人脸特征数据",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "数据库id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "FaceEigen",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceEigen"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/FaceEigen": {
+      "post": {
+        "tags": [
+          "SmartScaleMinimalApi"
+        ],
+        "summary": "保存人脸特征数据",
+        "description": "保存人脸特征数据到数据库",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceEigen"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "FaceEigen",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceEigen"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FaceEigen": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "数据库自动编号",
+            "format": "int32"
+          },
+          "gatewayId": {
+            "type": "string",
+            "description": "终端设备编号",
+            "nullable": true
+          },
+          "faceNo": {
+            "type": "string",
+            "description": "人脸编号",
+            "nullable": true
+          },
+          "eigen": {
+            "type": "string",
+            "description": "人脸特征值",
+            "nullable": true
+          },
+          "ctime": {
+            "type": "integer",
+            "description": "建立时间",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "人脸特征"
+      },
+      "PersonInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "数据库编号",
+            "format": "int32"
+          },
+          "gatewayId": {
+            "type": "string",
+            "description": "终端设备编号",
+            "nullable": true
+          },
+          "faceNo": {
+            "type": "string",
+            "description": "人脸编号",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "姓名",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "description": "年龄",
+            "format": "int32",
+            "nullable": true
+          },
+          "gender": {
+            "type": "string",
+            "description": "性别",
+            "nullable": true
+          },
+          "beauty": {
+            "type": "number",
+            "description": "颜值",
+            "format": "float",
+            "nullable": true
+          },
+          "ctime": {
+            "type": "integer",
+            "description": "建立时间",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "个人信息"
+      },
+      "SmartScale": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "数据库编号",
+            "format": "int32"
+          },
+          "gatewayId": {
+            "type": "string",
+            "description": "终端设备编号",
+            "nullable": true
+          },
+          "faceNo": {
+            "type": "string",
+            "description": "人脸编号",
+            "nullable": true
+          },
+          "faceName": {
+            "type": "string",
+            "description": "姓名",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "description": "身高,单位：厘米",
+            "format": "int32"
+          },
+          "weight": {
+            "type": "integer",
+            "description": "体重，单位：克",
+            "format": "int32"
+          },
+          "ctime": {
+            "type": "integer",
+            "description": "建立时间",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "测量数据"
+      }
+    }
+  }
+}
